@@ -1713,22 +1713,23 @@ section > .mp05 > .content_type_10 > a > .content_type_10_three > span {
 
 .bt_type_2 {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    width: 180px;
+    width: 100%;
     height: 36px;
     text-align: left;
     border-radius: 6px;
     background: linear-gradient(90deg, #814aeb, #0aa296);
+    padding: 0 20px;
 }
 .bt_type_2 > span {
     font-size: 12px;
     color: #fff;
-    padding-left: 20px;
     display: inline-block;
     margin-top: -2px;
     font-weight: bold;
     vertical-align: middle;
+    margin-right: 40px;
 }
 
 .hd_login_div > .bt_type_3 {
@@ -2199,6 +2200,7 @@ input[type='checkbox']:checked ~ .cb_1_text::before {
     background: url(../img/arrow_right_check.png);
     background-size: 6px auto;
     background-repeat: no-repeat;
+    background-position: 6px 0px;
 }
 /* .arrow_right {display: inline-block; width: 12px; height: 14px; background: url(../img/arrow_right.png); background-size: 6px auto; background-repeat: no-repeat; border: 1px solid gold;} */
 
