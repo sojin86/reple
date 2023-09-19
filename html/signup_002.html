@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>리플 아이디찾기</title>
+        <link rel="stylesheet" href="../css/reset.css" />
+        <link rel="stylesheet" href="../css/web_style.css" />
+        <script src="../js/jquery-3.6.0.js"></script>
+        <script src="../js/common.js"></script>
+    </head>
+    <script>
+        $(document).ready(function () {
+            // input x 버튼 클릭시 텍스트 내용 삭제
+            $('.cc_bt1').click(function () {
+                $('.input_id').val('');
+                $('.cc_bt1').addClass('close');
+                // text_input id border 회색 적용
+                $('.input_id').removeClass('white_line');
+                $('.input_id').addClass('gray_black_line');
+                // x 버튼 클릭시 오류내용 사라짐
+                var cancelBT = $(this);
+                var alert_div = $(this).closest('.login_sc_1').siblings('.input_alert');
+                alert_div.removeClass('open');
+                alert_div.addClass('close');
+                // text 없는 상태에서 로그인 버튼 회색
+                $('.login_bt').removeClass('white_bg');
+                $('.login_bt').addClass('gray_purple_bg2');
+                // 텍스트 없어짐
+                $('.alert3').removeClass('open');
+                $('.alert3').addClass('close');
+            });
+            $('.cc_bt2').click(function () {
+                $('.input_pw').val('');
+                $('.cc_bt2').addClass('close');
+                // text_input pw border 회색 적용
+                $('.input_pw').removeClass('white_line');
+                $('.input_pw').addClass('gray_black_line');
+                // 눈 아이콘 열려있을때 안보이는 눈으로 변경
+                if ($('.input_pw_icon > button > i').hasClass('icon_eyes')) {
+                    $('.input_pw_icon > button > i').removeClass('icon_eyes');
+                    $('.input_pw_icon > button > i').addClass('icon_noeyes');
+                }
+                // x 버튼 클릭시 오류내용 사라짐
+                var cancelBT = $(this);
+                var alert_div = $(this).closest('.login_sc_1').siblings('.input_alert');
+                alert_div.removeClass('open');
+                alert_div.addClass('close');
+                // text 없는 상태에서 로그인 버튼 회색
+                $('.login_bt').removeClass('white_bg');
+                $('.login_bt').addClass('gray_purple_bg2');
+                // 텍스트 없어짐
+                $('.alert4').removeClass('open');
+                $('.alert4').addClass('close');
+            });
+            // 텍스트 입력해야 x버튼 나옴
+            $('.input_text_type_2').keydown(function () {
+                var input_type2_this = $(this);
+                var input_type2_x_ICON = $(this).siblings('.cancel_bt_div').children('.cancel_bt');
+                // inpyt text 없는 상태
+                if (input_type2_this.val() == '') {
+                    input_type2_x_ICON.removeClass('open');
+                    input_type2_x_ICON.addClass('close');
+                    // text input border 회색 적용
+                    input_type2_this.removeClass('white_line');
+                    input_type2_this.addClass('gray_black_line');
+                    // text 없는 상태에서 로그인 버튼 회색
+                    $('.login_bt').removeClass('white_bg');
+                    $('.login_bt').addClass('gray_purple_bg2');
+                }
+                // inpyt text 있는 상태
+                else {
+                    input_type2_x_ICON.removeClass('close');
+                    input_type2_x_ICON.addClass('open');
+                    // text input border 흰색 적용
+                    input_type2_this.removeClass('gray_black_line');
+                    input_type2_this.addClass('white_line');
+                    // text 없는 상태에서 로그인 버튼 회색
+                    $('.login_bt').removeClass('gray_purple_bg2');
+                    $('.login_bt').addClass('white_bg');
+                    if ($('.input_alert').hasClass('open')) {
+                        $('.input_alert').removeClass('open');
+                        $('.input_alert').addClass('close');
+                    }
+                }
+            });
+            // id input 텍스트 입력하면 alert나옴
+            $('.input_id').keydown(function () {
+                var IPID = $(this);
+                if (IPID.val() == '') {
+                    $('.alert3').removeClass('open');
+                    $('.alert3').addClass('close');
+                } else {
+                    $('.alert3').removeClass('close');
+                    $('.alert3').addClass('open');
+                }
+            });
+
+            // number input 텍스트 입력하면 alert나옴
+            $('.input_pw').keydown(function () {
+                var IPPW = $(this);
+                if (IPPW.val() == '') {
+                    $('.alert4').removeClass('open');
+                    $('.alert4').addClass('close');
+                } else {
+                    $('.alert4').removeClass('close');
+                    $('.alert4').addClass('open');
+                }
+            });
+
+            // 버튼 클릭시 alert나오고 버튼 흰색으로 변경
+            $('.login_bt').click(function () {
+                $('.login_bt').addClass('white_bg');
+
+                var loginBT = $(this);
+                var input_type2_this = $(this)
+                    .parents('.login_sc_2')
+                    .siblings('.login_sc_1')
+                    .children('.input_text_type_2');
+                var input_alert = $(this).parents('.login_sc_2').siblings('.input_alert');
+                // 빨간 alert 나오기
+                input_alert.removeClass('close');
+                input_alert.addClass('open');
+                //  회색 alert 없어지기
+                $('.input_alert2').removeClass('open');
+                $('.input_alert2').addClass('close');
+            });
+        });
+    </script>
+    <body>
+        <div class="login_wrap">
+            <div class="login_div">
+                <div class="login_hd">
+                    <i class="login_logo"></i>
+                </div>
+                <div class="login_sc">
+                    <div class="login_sc_0">
+                        <h3>아이디 찾기</h3>
+                    </div>
+                    <div class="login_sc_1">
+                        <input
+                            type="text"
+                            class="input_text_type_2 input_id gray_black_line"
+                            name="id"
+                            placeholder="이름을 입력해 주세요."
+                            minlength="2"
+                        />
+                        <div class="input_cancel_icon cancel_bt_div">
+                            <button class="cancel_bt cc_bt1 close">
+                                <i class="text_cancel_icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input_alert close alert1">
+                        <p>
+                            <i class="icon_alert"></i>
+                            아이디를 입력해주세요.
+                        </p>
+                    </div>
+                    <div class="input_alert2 alert3 close">
+                        <p>
+                            <i class="icon_alert2"></i>
+                            2자 이상 입력해주세요.
+                        </p>
+                    </div>
+                    <div class="login_sc_1 mg_top_10">
+                        <input
+                            type="number"
+                            class="input_text_type_2 input_pw gray_black_line"
+                            name="number"
+                            placeholder="휴대폰 번호를 입력해주세요."
+                        />
+                        <div class="input_cancel_icon cancel_bt_div">
+                            <button class="cancel_bt cc_bt2 close">
+                                <i class="text_cancel_icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input_alert close alert2">
+                        <p>
+                            <i class="icon_alert"></i>
+                            전화번호를 입력해주세요.
+                        </p>
+                    </div>
+                    <div class="input_alert2 alert4 close">
+                        <p>
+                            <i class="icon_alert2"></i>
+                            - 없이 숫자만 입력해주세요.
+                        </p>
+                    </div>
+                    <div class="login_sc_2 mg_top_75">
+                        <button class="bt_type_10 login_bt gray_purple_bg2">확인</button>
+                    </div>
+                    <div class="login_sc_3">
+                        <div class="login_sc_3_right">
+                            <a href="../html/signup_004.html">
+                                <span>비밀번호 바로 찾기 →</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

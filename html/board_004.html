@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>커뮤니티 상세</title>
+        <link rel="stylesheet" href="../css/reset.css" />
+        <link rel="stylesheet" href="../css/web_style.css" />
+        <link rel="stylesheet" href="../css/mobile_style.css" />
+        <script src="../js/jquery-3.6.0.js"></script>
+        <script src="../js/common.js"></script>
+    </head>
+    <script>
+        $(document).ready(function () {
+            // 등록순 최신순
+            var BT5 = $('.bt_type_5');
+            BT5.click(function () {
+                var BT5this = $(this);
+                BT5.siblings('.bt_type_5').removeClass('gray_white_color');
+                BT5this.addClass('gray_white_color');
+            });
+            // 메인 좋아요 버튼 클릭
+            var like_bt = $('.content_type_6-1 > .content_type_6-1_bt1');
+            like_bt.click(function () {
+                var LikeBT = $(this);
+                LikeBT.children('.like_icon').toggleClass('like_icon_check');
+                LikeBT.children('.content_type_6-1 > button > span').toggleClass('pink_color');
+            });
+            // 작은 좋아요 버튼 클릭
+            var like_bt_s = $('.content_type_8_sc_two3_bt');
+            like_bt_s.click(function () {
+                var LikeBT_S = $(this);
+                LikeBT_S.children('.heart_icon').toggleClass('heart_icon_check');
+                LikeBT_S.children('.content_type_8_sc_two3 > .content_type_8_sc_two3_bt > span').toggleClass(
+                    'pink_color'
+                );
+            });
+            // ... 버튼
+            $(document).on('click', '.content_type_8_sc_two_right_icon > button', function () {
+                var MaruBT = $(this);
+                var Maru_Bt = $(this)
+                    .parent('.content_type_8_sc_two_right_icon')
+                    .siblings('.content_type_8_sc_two_right_click');
+
+                Maru_Bt.show();
+                $(this).addClass('open');
+            });
+            $('body').click(function (e) {
+                if ($('.content_type_8_sc_two_right_icon > button').hasClass('open')) {
+                    $('.content_type_8_sc_two_right_click').hide();
+                    $('.content_type_8_sc_two_right_icon > button').removeClass('open');
+                }
+            });
+            // 댓글쓰기 버튼 클릭시 input 박스 나옴
+            var text_BT = $('.content_type_8_sc_two3_textbt');
+            text_BT.click(function () {
+                var text_BT_THIS = $(this);
+                var text_BT_BOX = $(this).parents('.content_type_8_sc_two3').siblings('.content_type_8_sc_three');
+
+                text_BT_THIS.click(function () {
+                    text_BT_BOX.addClass('open');
+                });
+            });
+            // select_box_1
+            $(document).on('click', '.select1', function () {
+                var boxObj1 = $(this).parent().siblings('.options_1').children('ul');
+                boxObj1.show();
+                $(this).addClass('open');
+            });
+            $('body').click(function (e) {
+                if ($('.select1').hasClass('open')) {
+                    $('.select1_ul').hide();
+                    $('.select1').removeClass('open');
+                }
+            });
+            $('.options_1 > ul > li > button').click(function () {
+                var changeText = $(this).html();
+                var Selected_1 = $(this).closest('.options_1').siblings('.selected_1');
+                var checkText = $(this).closest('.options_1').siblings('.selected_1').children('.select1');
+
+                Selected_1.find('.select1').html(changeText);
+                checkText.css('color', '#f6f6f6');
+                $(this).closest('ul').hide();
+            });
+            $('.select1_ul li').click(function () {
+                $('.selected_1 > .select1').addClass('white_line2');
+            });
+            // 버튼 클릭시 modal_1_open (modal_signup)
+            var CT_opBT = $('.content_type_4_hd_right > .revise_bt');
+            CT_opBT.click(function () {
+                $('.modal_signup').removeClass('close');
+                $('.modal_signup').addClass('open');
+                $('body').css('overflow-y', 'hidden');
+            });
+            // modal_1 (modal_signup) x버튼 클릭시 없어짐
+            var MD1_cancel_bt = $('.modal_signup_cancel_bt');
+            MD1_cancel_bt.click(function () {
+                $('.modal_signup').removeClass('open');
+                $('.modal_signup').addClass('close');
+                $('body').css('overflow-y', 'scroll');
+            });
+            // modal_1 등록버튼 클릭시 없어짐 (modal_signup)
+            var MD1_saveBT = $('.modal_1_ft_div > .bt_type_8');
+            MD1_saveBT.click(function () {
+                $('.modal_signup').removeClass('open');
+                $('.modal_signup').addClass('close');
+                $('body').css('overflow-y', 'scroll');
+            });
+
+            // 댓글쓰기input 텍스트입력하면 x cnacel버튼 나옴
+            $('.text_type_1').keydown(function () {
+                var tt_type1 = $(this);
+                var XBT = $(this).siblings('.bt_type_12');
+                var cancelBT = $(this).siblings('.bt_type_11');
+                // input 텍스트 없는 상태
+                if (tt_type1.val() == '') {
+                    // x버튼 안나오게
+                    XBT.removeClass('open');
+                    XBT.addClass('close');
+                    // cancel버튼 안나오게
+                    cancelBT.removeClass('open');
+                    cancelBT.addClass('close');
+                } // input 텍스트 있는 상태
+                else {
+                    // x 버튼 나오게
+                    XBT.removeClass('close');
+                    XBT.addClass('open');
+                    // cancel 버튼 나오게
+                    cancelBT.removeClass('close');
+                    cancelBT.addClass('open');
+                }
+            });
+            // X 버튼 클릭시 해당 내용 사라짐
+            $('.bt_type_12').click(function () {
+                var BT12 = $(this);
+                var BT12_IP = $(this).siblings('.text_type_1');
+                var BT11 = $(this).siblings('.bt_type_11');
+
+                BT12.click(function () {
+                    // input 텍스트 없애기
+                    BT12_IP.val('');
+                    // x 버튼 없애기
+                    BT12.removeClass('open');
+                    BT12.addClass('close');
+                    // cancel버튼 없애기
+                    BT11.removeClass('open');
+                    BT11.addClass('close');
+                });
+            });
+            // 모바일 hd ...버튼
+            $(document).on('click', '.m_hd_type_1_right > button', function () {
+                var m_ccBT = $(this);
+                var m_clickBT = $(this).parents('.m_hd_type_1_right').siblings('.m_hd_type_1_click');
+
+                m_clickBT.show();
+                $(this).addClass('open');
+            });
+            $('body').click(function (e) {
+                if ($('.m_hd_type_1_right > button').hasClass('open')) {
+                    $('.m_hd_type_1_click').hide();
+                    $('.m_hd_type_1_right > button').removeClass('open');
+                }
+            });
+            // 수정 버튼 클릭시 모달 나옴
+            var cancel_BT = $('.m_hd_type_1_click > .m_cancel_bt');
+            cancel_BT.click(function () {
+                $('.modal_signup').removeClass('close');
+                $('.modal_signup').addClass('open');
+                $('body').css('overflow-y', 'hidden');
+            });
+            // 모바일 푸터 댓글 달면 x 버튼 나옴
+            $('.ip_footer > input').keydown(function () {
+                var ftip = $(this);
+                if (ftip.val() == '') {
+                    $('.ip_footer_icon > .bt_type_12').removeClass('open');
+                    $('.ip_footer_icon > .bt_type_12').addClass('close');
+                } else {
+                    $('.ip_footer_icon > .bt_type_12').removeClass('close');
+                    $('.ip_footer_icon > .bt_type_12').addClass('open');
+                }
+            });
+            $('.ip_footer > .ip_footer_icon > i').click(function () {
+                $('.ip_footer > input').val('');
+            });
+            // x
+            // 모달1 제목 텍스트 입력하면 x 버튼 나옴
+            var modal_IP = $('.modal_1_sc_two_2 > .input_text_type_1');
+            modal_IP.keydown(function () {
+                var md_ip_this = $(this);
+
+                if (md_ip_this.val() == '') {
+                    $('.modal_1_text_icon').removeClass('open');
+                    $('.modal_1_text_icon').addClass('close');
+                } else {
+                    $('.modal_1_text_icon').removeClass('close');
+                    $('.modal_1_text_icon').addClass('open');
+                }
+            });
+            // 모달1 x 버튼 클릭하면 해당 내용 사라짐
+            $('.modal_1_text_icon').click(function () {
+                $('.input_text_type_1').val('');
+                $('.modal_1_text_icon').addClass('close');
+                $('.input_text_type_1').removeClass('white_line');
+                $('.input_text_type_1').addClass('gray_black_line');
+            });
+            // input text box안에 글자 들어오면 흰색 border 주기
+            var modal_ip_box = $('.modal_1_sc_two_2 > .input_text_type_1');
+            modal_ip_box.keydown(function () {
+                var md_ip_this = $(this);
+
+                if (md_ip_this.val() == '') {
+                    md_ip_this.removeClass('white_line');
+                    md_ip_this.addClass('gray_black_line');
+                } else {
+                    md_ip_this.removeClass('gray_black_line');
+                    md_ip_this.addClass('white_line');
+                }
+            });
+            // // textarea 안에 글자 들어오면 흰색 border 주기
+            var modal_ta_box = $('.modal_1_sc_two_3 > .text_type_2');
+            modal_ta_box.keydown(function () {
+                var md_ta_this = $(this);
+
+                if (md_ta_this.val() == '') {
+                    md_ta_this.removeClass('white_line');
+                    md_ta_this.addClass('gray_black_line2');
+                } else {
+                    md_ta_this.removeClass('gray_black_line2');
+                    md_ta_this.addClass('white_line');
+                }
+            });
+        });
+    </script>
+    <body>
+        <div class="wrap border_pg">
+            <header>
+                <div class="hd_wrap">
+                    <div class="hd_logo_div">
+                        <img src="../img/hd_logo.png" class="hd_logo" />
+                        <span class="hd_logo_font">커뮤니티</span>
+                        <i class="hd_logo_icon"></i>
+                    </div>
+                    <div class="hd_right_div">
+                        <div class="hd_search_div">
+                            <i class="icon_search"></i>
+                            <input type="search" class="search_bar_type_1" placeholder="검색어를 입력하세요" />
+                        </div>
+                        <div class="hd_login_div">
+                            <a href="../html/mypage_001.html" class="bt_type_3">
+                                <i class="icon_user"></i>
+                            </a>
+                            <button class="bt_type_3">
+                                <i class="icon_bell"></i>
+                                <i class="white_circle_icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="m_hd_type_1 close">
+                <div class="m_hd_type_1_left">
+                    <button>
+                        <i class="m_arrow_left"></i>
+                    </button>
+                </div>
+                <div class="m_hd_type_1_center">
+                    <span>자유토론</span>
+                </div>
+                <div class="m_hd_type_1_right">
+                    <button>
+                        <i class="m_maru_3"></i>
+                    </button>
+                </div>
+                <div class="m_hd_type_1_click">
+                    <button>공유</button><br />
+                    <button class="m_cancel_bt">수정</button><br />
+                    <button>삭제</button>
+                </div>
+            </div>
+            <nav>
+                <ul class="gray_purple_bg">
+                    <li class="">
+                        <a href="../html/main_001.html">
+                            <span>전체</span>
+                            <i class="nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="../html/main_002.html">
+                            <span>자유토론</span>
+                            <i class="nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span>스니커즈</span>
+                            <i class="white_circle_icon nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span>착샷</span>
+                            <i class="white_circle_icon nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span>이벤트</span>
+                            <i class="nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span>응모인증</span>
+                            <i class="nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span>주간리플</span>
+                            <i class="white_circle_icon nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <section>
+                <div class="content_type_4 gray_purple_bg-1">
+                    <div class="content_type_4_hd">
+                        <div class="content_type_4_hd_left">
+                            <i class="user_icon1"></i>
+                            <div class="content_type_4_hd_left1">
+                                <p>JORDAN</p>
+                                <div class="content_type_4_hd_left2">
+                                    <span>1시간 전</span>
+                                    <i class="eye_icon"></i>
+                                    <span>23</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content_type_4_hd_right">
+                            <button class="bt_type_9">공유</button>
+                            <span>|</span>
+                            <button class="bt_type_9 revise_bt">수정</button>
+                            <span>|</span>
+                            <button class="bt_type_9">삭제</button>
+                            <span>|</span>
+                            <button class="bt_type_9">신고</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="content_type_5 gray_purple_bg-1">
+                    <h4>
+                        제목 텍스트 제목 텍스트 제목 텍스트 제목 텍스트 제목 텍스트 제목 텍스트 제목 텍스트 제목 텍스트
+                        제목 텍스트
+                    </h4>
+                    <p>
+                        착화샷 나갑니다~ 너무너무 소유하고 싶었던 텅!!! <br />리플로 안전거래 확보했어요.착화샷
+                        나갑니다~ 너무너무 소유하고 싶었던 텅!!! 리플로 안전거래 확보했어요.착화샷 나갑니다~ <br />
+                        너무너무 소유하고 싶었던 텅!!! 리플로 안전거래 확보했어요. 너무너무 소유하고 싶었던 텅!!! 리플로
+                        안전거래 확보했어요. <br />
+                        완전 만족스러운 거래였어요!! <br />
+                        신나신나!! 완전 만족스러운 거래였어요!! <br />
+                        신나신나!!
+                    </p>
+                    <img src="../img/content_pt1.png" class="picture_3" />
+                </div>
+                <div class="content_type_6 gray_purple_bg-1">
+                    <div class="content_type_6-1">
+                        <button class="content_type_6-1_bt1">
+                            <i class="like_icon"></i>
+                            <span class="content_type_6-1_bt1_span gray_color2">좋아요</span>
+                        </button>
+                    </div>
+                    <div class="content_type_6-2">
+                        <span>|</span>
+                    </div>
+                    <div class="content_type_6-1">
+                        <button class="content_type_6-1_bt2">
+                            <i class="share_icon"></i>
+                            <span class="gray_color2">공유하기</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="picture_ad_div mg_top_2">
+                    <img src="../img/picture_ad1.png" alt="" />
+                </div>
+                <div class="content_type_7 gray_purple_bg-1 mg_top_10">
+                    <div class="content_type_7-1">
+                        <a href="#">
+                            <span>이전</span>
+                            <p>조던 사기 아닌가요? 조던 사기 아닌가요?</p>
+                        </a>
+                    </div>
+                    <div class="content_type_7-1">
+                        <a href="#">
+                            <span>다음</span>
+                            <p>스니커즈에 푹 빠졌어요~~</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="content_type_8 mg_top_10 gray_purple_bg-1">
+                    <div class="content_type_8_hd">
+                        <div class="content_type_8_hd_left">
+                            <p>댓글<span>37</span>개</p>
+                        </div>
+                        <div class="content_type_8_hd_right">
+                            <div class="content_type_1-1_sc_two2-1">
+                                <button class="bt_type_5">등록순</button>
+                                <span class="line_gray">|</span>
+                                <button class="bt_type_5 gray_white_color">최신순</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content_type_8_sc">
+                        <div class="content_type_1-1_sc_two">
+                            <div class="content_type_1-1_sc_two1">
+                                <textarea
+                                    class="text_type_1 gray_purple_bg-1"
+                                    placeholder="지금 리플에서 하고 싶은 말을 작성해주세요."
+                                ></textarea>
+                                <button class="bt_type_4">등록</button>
+                            </div>
+                        </div>
+                        <div class="content_type_8_sc_two mg_top_15">
+                            <div class="content_type_8_sc_two1">
+                                <i class="user_icon1"></i>
+                            </div>
+                            <div class="content_type_8_sc_two2">
+                                <p>
+                                    <span>JORDAN</span>
+                                    착화샷 나갑니다~ 너무너무 소유 하고 싶었던 텅!!!!!!!!! 리플로 안전거래 확보했어요.
+                                    착화샷 나갑니다~ 리플로 안전거래 확보했어요. 착화샷 나갑니다~
+                                </p>
+                            </div>
+                            <div class="content_type_8_sc_two3">
+                                <span>5시간</span>
+                                <button class="content_type_8_sc_two3_bt">
+                                    <i class="heart_icon"></i>
+                                    <span class="gray_color2">6</span>
+                                </button>
+                                <button class="content_type_8_sc_two3_textbt">댓글쓰기</button>
+                            </div>
+                            <div class="content_type_8_sc_two_right">
+                                <div class="content_type_8_sc_two_right_icon">
+                                    <button>
+                                        <i class="icon_more"></i>
+                                    </button>
+                                </div>
+                                <div class="content_type_8_sc_two_right_click">
+                                    <button>신고</button> <br />
+                                    <button>수정</button> <br />
+                                    <button>삭제</button>
+                                </div>
+                            </div>
+                            <div class="content_type_8_sc_three mg_top_15">
+                                <div class="content_type_1-1_sc_two">
+                                    <div class="content_type_1-1_sc_two1">
+                                        <textarea
+                                            class="text_type_1 gray_purple_bg-1"
+                                            placeholder="지금 리플에서 하고 싶은 말을 작성해주세요."
+                                        ></textarea>
+                                        <button class="bt_type_4">등록</button>
+                                        <button class="bt_type_11 close">취소</button>
+                                        <button class="bt_type_12 close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content_type_8_sc_two mg_top_15">
+                            <div class="content_type_8_sc_two1">
+                                <i class="user_icon2"></i>
+                            </div>
+                            <div class="content_type_8_sc_two2">
+                                <p>
+                                    <span>DAN</span>
+                                    사진이 너무너무 맘에 드네요~
+                                </p>
+                            </div>
+                            <div class="content_type_8_sc_two3">
+                                <span>2022-02-07</span>
+                                <button class="content_type_8_sc_two3_bt">
+                                    <i class="heart_icon heart_icon_check"></i>
+                                    <span class="gray_color2 pink_color">6</span>
+                                </button>
+                                <button class="content_type_8_sc_two3_textbt">댓글쓰기</button>
+                            </div>
+                            <div class="content_type_8_sc_two_right">
+                                <div class="content_type_8_sc_two_right_icon">
+                                    <button>
+                                        <i class="icon_more"></i>
+                                    </button>
+                                </div>
+                                <div class="content_type_8_sc_two_right_click">
+                                    <button>신고</button> <br />
+                                    <button>수정</button> <br />
+                                    <button>삭제</button>
+                                </div>
+                            </div>
+                            <div class="content_type_8_sc_three mg_top_15">
+                                <div class="content_type_1-1_sc_two">
+                                    <div class="content_type_1-1_sc_two1">
+                                        <textarea
+                                            class="text_type_1 gray_purple_bg-1"
+                                            placeholder="지금 리플에서 하고 싶은 말을 작성해주세요."
+                                        ></textarea>
+                                        <button class="bt_type_4">등록</button>
+                                        <button class="bt_type_11 close">취소</button>
+                                        <button class="bt_type_12 close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content_type_8_sc_two mg_top_15 mg_left_40">
+                            <div class="content_type_8_sc_two1">
+                                <i class="user_icon1"></i>
+                            </div>
+                            <div class="content_type_8_sc_two2">
+                                <p>
+                                    <span>JORDAN </span>
+                                    감사합니당!!
+                                </p>
+                            </div>
+                            <div class="content_type_8_sc_two3">
+                                <span>2022-02-08</span>
+                                <button class="content_type_8_sc_two3_bt">
+                                    <i class="heart_icon"></i>
+                                    <span class="gray_color2">0</span>
+                                </button>
+                                <button class="content_type_8_sc_two3_textbt">댓글쓰기</button>
+                            </div>
+                            <div class="content_type_8_sc_two_right">
+                                <div class="content_type_8_sc_two_right_icon">
+                                    <button>
+                                        <i class="icon_more"></i>
+                                    </button>
+                                </div>
+                                <div class="content_type_8_sc_two_right_click">
+                                    <button>신고</button> <br />
+                                    <button>수정</button> <br />
+                                    <button>삭제</button>
+                                </div>
+                            </div>
+                            <div class="content_type_8_sc_three mg_top_15">
+                                <div class="content_type_1-1_sc_two">
+                                    <div class="content_type_1-1_sc_two1">
+                                        <textarea
+                                            class="text_type_1 gray_purple_bg-1"
+                                            placeholder="지금 리플에서 하고 싶은 말을 작성해주세요."
+                                        ></textarea>
+                                        <button class="bt_type_4">등록</button>
+                                        <button class="bt_type_11 close">취소</button>
+                                        <button class="bt_type_12 close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content_type_8_sc_two mg_top_15 mg_left_40">
+                            <div class="content_type_8_sc_two1">
+                                <i class="user_icon2"></i>
+                            </div>
+                            <div class="content_type_8_sc_two2">
+                                <p>
+                                    <span>DAN</span>
+                                    Good!!!
+                                </p>
+                            </div>
+                            <div class="content_type_8_sc_two3">
+                                <span>3시간</span>
+                                <button class="content_type_8_sc_two3_bt">
+                                    <i class="heart_icon heart_icon_check"></i>
+                                    <span class="gray_color2 pink_color">1.586</span>
+                                </button>
+                                <button class="content_type_8_sc_two3_textbt">댓글쓰기</button>
+                            </div>
+                            <div class="content_type_8_sc_two_right">
+                                <div class="content_type_8_sc_two_right_icon">
+                                    <button><i class="icon_more"></i></button>
+                                </div>
+                                <div class="content_type_8_sc_two_right_click">
+                                    <button>신고</button> <br />
+                                    <button>수정</button> <br />
+                                    <button>삭제</button>
+                                </div>
+                            </div>
+                            <div class="content_type_8_sc_three mg_top_15 open">
+                                <div class="content_type_1-1_sc_two">
+                                    <div class="content_type_1-1_sc_two1">
+                                        <textarea
+                                            class="text_type_1 gray_purple_bg-1"
+                                            placeholder="지금 리플에서 하고 싶은 말을 작성해주세요."
+                                        ></textarea>
+                                        <button class="bt_type_4">등록</button>
+                                        <button class="bt_type_11 close">취소</button>
+                                        <button class="bt_type_12 close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <aside>
+                <div class="right_ad_div">
+                    <img src="../img/Artboard_1.png" alt="" />
+                    <img src="../img/Artboard_2.png" alt="" />
+                </div>
+            </aside>
+            <div class="ip_footer close">
+                <input type="text" placeholder="@DAN 님에게 댓글 다는 중" />
+                <div class="ip_footer_icon">
+                    <i class="bt_type_12 close"></i>
+                    <button class="bt_type_4">등록</button>
+                </div>
+            </div>
+        </div>
+        <!-- 팝업창 1 -->
+        <div class="modal_1 modal_signup close">
+            <div class="modal_content_1 modal_background_1_color">
+                <div class="modal_1_header modal_background_1_color">
+                    <div class="modal_1_header_left">
+                        <h2>게시물 수정</h2>
+                    </div>
+                    <div class="modal_1_header_right">
+                        <button class="modal_1_cancel_bt">
+                            <i class="modal_cancel_1_icon modal_signup_cancel_bt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal_1_section">
+                    <div class="modal_1_sc_one">
+                        <div class="modal_1_sc_one_1">
+                            <button>
+                                <i class="camera_icon"></i>
+                                <p>4/10</p>
+                            </button>
+                        </div>
+                        <div class="modal_1_sc_one_2">
+                            <img src="../img/add_picture1.png" class="add_picture_1" />
+                            <div class="modal_sc_one_2_bottom">
+                                <span>MAIN</span>
+                            </div>
+                            <div class="modal_sc_one_2_right">
+                                <button>
+                                    <i class="cancel_icon_1"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal_1_sc_one_2">
+                            <img src="../img/add_picture2.png" class="add_picture_1" />
+                            <div class="modal_sc_one_2_right">
+                                <button>
+                                    <i class="cancel_icon_1"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal_1_sc_one_2">
+                            <img src="../img/add_picture3.png" class="add_picture_1" />
+                            <div class="modal_sc_one_2_right">
+                                <button>
+                                    <i class="cancel_icon_1"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal_1_sc_one_2">
+                            <img src="../img/add_picture4.png" class="add_picture_1" />
+                            <div class="modal_sc_one_2_right">
+                                <button>
+                                    <i class="cancel_icon_1"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal_1_sc_one_2">
+                            <img src="../img/add_picture2.png" class="add_picture_1" />
+                            <div class="modal_sc_one_2_right">
+                                <button>
+                                    <i class="cancel_icon_1"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal_1_sc_one_2">
+                            <img src="../img/add_picture3.png" class="add_picture_1" />
+                            <div class="modal_sc_one_2_right">
+                                <button>
+                                    <i class="cancel_icon_1"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal_1_sc_one_2">
+                            <img src="../img/add_picture4.png" class="add_picture_1" />
+                            <div class="modal_sc_one_2_right">
+                                <button>
+                                    <i class="cancel_icon_1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc_two">
+                        <div class="modal_1_sc_two_1">
+                            <div class="selected_1 white_line2">
+                                <span class="select1 white_color"> 자유토론 </span>
+                                <i class="arrow_lable_icon"></i>
+                            </div>
+                            <div class="options_1">
+                                <ul class="select1_ul">
+                                    <li>
+                                        <button>스니커즈</button>
+                                    </li>
+                                    <li>
+                                        <button>착샷</button>
+                                    </li>
+                                    <li>
+                                        <button>이벤트</button>
+                                    </li>
+                                    <li>
+                                        <button>응모인증</button>
+                                    </li>
+                                    <li>
+                                        <button>주간리플</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="modal_1_sc_two_2">
+                            <input
+                                type="text"
+                                class="input_text_type_1 white_line"
+                                value="조던 자랑해요!!"
+                                placeholder="제목을 입력하세요"
+                            />
+                            <div class="modal_1_text_icon">
+                                <button>
+                                    <i class="text_cancel_icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal_1_sc_two_3">
+                            <textarea class="text_type_2 white_line" placeholder="내용을 입력하세요.">
+조던 내용을 입력하고 있어요.</textarea
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="modal_1_footer modal_background_1_color">
+                    <div class="modal_1_ft_div">
+                        <button class="bt_type_8">등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 팝업창 2 -->
+        <div class="modal_1 modal_notice close">
+            <div class="modal_content_1 gray_purple_bg">
+                <div class="modal_1_header gray_purple_bg">
+                    <div class="modal_1_header_left">
+                        <h2>앱 알림</h2>
+                    </div>
+                    <div class="modal_1_header_right">
+                        <button class="modal_1_cancel_bt">
+                            <i class="modal_cancel_1_icon modal_notice_cancel_bt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal_1_section2">
+                    <div class="modal_1_sc2_one">
+                        <p>앱 알림은 1개월간 보관 후 자동 삭제됩니다.</p>
+                    </div>
+                    <div class="modal_1_sc2_two">
+                        <div class="content_type_3 gray_purple_bg2">
+                            <a href="#">
+                                <p>
+                                    <span>JORDAN</span>
+                                    님이 작성한 게시물에 새 댓글이 올라왔습니다.
+                                </p>
+                                <h5>재미없는 하루!</h5>
+                                <span>2022-02-15</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc2_two">
+                        <div class="content_type_3 gray_purple_bg2">
+                            <a href="#">
+                                <p>
+                                    <span>JORDAN</span>
+                                    님이 작성한 게시물을 14명이 좋아합니다.
+                                </p>
+                                <h5>왜 재미가 없을까요? 재미있는 하루가 되셨으면 해요. 재미있는 하루 되시길!!</h5>
+                                <span>2022-02-15</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc2_two">
+                        <div class="content_type_3 gray_purple_bg2">
+                            <a href="#">
+                                <h5>지금 리플 운영자가 정성스럽게 작성한 정품 스니커즈에 대해서 알아봐요!</h5>
+                                <span>2022-02-15</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc2_two">
+                        <div class="content_type_3 gray_purple_bg2">
+                            <a href="#">
+                                <p>
+                                    <span>JORDAN</span>
+                                    님이 작성한 게시물에 새 댓글이 올라왔습니다.
+                                </p>
+                                <h5>재미없는 하루!</h5>
+                                <span>2022-02-15</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc2_two">
+                        <div class="content_type_3 gray_purple_bg2">
+                            <a href="#">
+                                <p>
+                                    <span>JORDAN</span>
+                                    님이 작성한 게시물을 14명이 좋아합니다.
+                                </p>
+                                <h5>왜 재미가 없을까요? 재미있는 하루가 되셨으면 해요. 재미있는 하루 되시길!!</h5>
+                                <span>2022-02-15</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

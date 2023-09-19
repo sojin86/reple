@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리플 비밀번호찾기</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/web_style.css">
+    <script src="../js/jquery-3.6.0.js"></script>
+    <script src="../js/common.js"></script>
+</head>
+<script>
+    $(document).ready(function(){
+        // input pw 이벤트
+        $(".icon_noeyes").on('click', function(){
+            // 아이콘 눈 클릭시 색상 변경
+            var ICON_EYES = $(this);
+            var pw_input = $(this).parents('.input_pw_icon').siblings('.input_text_type_2');
+
+            ICON_EYES.toggleClass("icon_eyes");
+            // 패스워드 보이기/안보이기
+            pw_input.toggleClass('active');
+            if(pw_input.hasClass('active') == true){
+                pw_input.attr('type', "text");
+            } else {
+                pw_input.attr('type', "password");
+            }
+        });
+
+        // input x 버튼 클릭시 텍스트 내용 삭제
+        $(".cc_bt1").click(function(){
+            $('.input_id').val('');
+            $(".cc_bt1").addClass("close");
+            // text_input id border 회색 적용
+            $(".input_id").removeClass("white_line");
+            $(".input_id").addClass("gray_black_line");
+            // x 버튼 클릭시 오류내용 사라짐
+            var cancelBT = $(this);
+            var alert_div = $(this).closest(".login_sc_1").siblings(".input_alert");
+            alert_div.removeClass("open");
+            alert_div.addClass("close");
+            // text 없는 상태에서 로그인 버튼 회색
+            $(".login_bt").removeClass("white_bg");
+            $(".login_bt").addClass("gray_purple_bg2");
+            // 텍스트 없어짐
+            $(".alert3").removeClass("open");
+            $(".alert3").addClass("close");
+            // pw텍스트로 변경
+            $(".pw1").attr('type','password');
+            $(".pw2").attr('type','password');
+            // 눈 모양 색 없어짐
+            $(".input_pw_icon > button > i").removeClass('icon_eyes');
+            $(".input_pw_icon > button > i").addClass('icon_noeyes');
+        });
+        $(".cc_bt2").click(function(){
+            $('.input_pw').val('');
+            $(".cc_bt2").addClass("close");
+            // text_input pw border 회색 적용 
+            $(".input_pw").removeClass("white_line");
+            $(".input_pw").addClass("gray_black_line");
+            // 눈 아이콘 열려있을때 안보이는 눈으로 변경
+            if($('.input_pw_icon > button > i').hasClass('icon_eyes')){
+               $('.input_pw_icon > button > i').removeClass('icon_eyes');
+               $('.input_pw_icon > button > i').addClass('icon_noeyes');
+            } 
+            // x 버튼 클릭시 오류내용 사라짐
+            var cancelBT = $(this);
+            var alert_div = $(this).closest(".login_sc_1").siblings(".input_alert");
+            alert_div.removeClass("open");
+            alert_div.addClass("close");
+            // text 없는 상태에서 로그인 버튼 회색
+            $(".login_bt").removeClass("white_bg");
+            $(".login_bt").addClass("gray_purple_bg2");
+            // 텍스트 없어짐
+            $(".alert4").removeClass("open");
+            $(".alert4").addClass("close");
+        });
+        // 텍스트 입력해야 x버튼 나옴 
+        $(".input_text_type_2").keydown(function(){
+            var input_type2_this = $(this);
+            var input_type2_x_ICON = $(this).siblings(".cancel_bt_div").children(".cancel_bt");
+            // inpyt text 없는 상태
+            if (input_type2_this.val()=='') {
+                input_type2_x_ICON.removeClass('open');
+                input_type2_x_ICON.addClass('close');
+                // text input border 회색 적용
+                input_type2_this.removeClass("white_line");
+                input_type2_this.addClass("gray_black_line");
+                // text 없는 상태에서 로그인 버튼 회색
+                $(".login_bt").removeClass("white_bg");
+                $(".login_bt").addClass("gray_purple_bg2");
+                // 텍스트입력하면 alert 나옴
+                $(".alert3").removeClass("open");
+                $(".alert3").addClass("close");
+            } 
+            // inpyt text 있는 상태
+            else {
+                input_type2_x_ICON.removeClass('close');
+                input_type2_x_ICON.addClass('open');
+                // text input border 흰색 적용
+                input_type2_this.removeClass("gray_black_line");
+                input_type2_this.addClass("white_line");
+                // text 없는 상태에서 로그인 버튼 회색
+                $(".login_bt").removeClass("gray_purple_bg2");
+                $(".login_bt").addClass("white_bg");
+                if ($(".input_alert").hasClass("open")) {
+                    $(".input_alert").removeClass("open");
+                    $(".input_alert").addClass("close");
+                }
+                $(".alert3").removeClass("close");
+                $(".alert3").addClass("open");
+            }
+        });
+        // 버튼 클릭시 alert나오고 버튼 흰색으로 변경
+        $(".login_bt").click(function(){
+            $('.login_bt').addClass('white_bg');
+
+            var loginBT = $(this);
+            var input_type2_this = $(this).parents(".login_sc_2").siblings(".login_sc_1").children(".input_text_type_2");
+            var input_alert = $(this).parents(".login_sc_2").siblings(".input_alert");
+            // 빨간 alert 오픈
+            input_alert.removeClass('close');
+            input_alert.addClass("open");
+            // alert3 없애기
+            $(".alert3").removeClass("open");
+            $(".alert3").addClass("close")
+        });
+        // 비밀번호 같은지 다른지
+        $(".pw2").keyup(function(){
+            var PW1 = $(".pw1").val();
+            var PW2 = $(".pw2").val();
+
+            if(PW1 == PW2){
+                $(".alert4").removeClass('close');
+                $(".alert4").addClass('open');
+
+                $(".alert2").removeClass('open');
+                $(".alert2").addClass('close');
+            } else {
+                $(".alert4").removeClass('open');
+                $(".alert4").addClass('close');
+
+                $(".alert2").removeClass('close');
+                $(".alert2").addClass('open');
+            }
+        });
+        // 비밀번호 10자 이상 alert창 만들기 
+        $(".input_text_type_2").on('keyup', function(){
+            if($(this).val().length > 9){
+                alert("10자 미만으로 입력해주세요");
+            }
+        });
+    });
+</script>
+<body>
+    <div class="login_wrap">
+        <div class="login_div">
+            <div class="login_hd">
+                <i class="login_logo"></i>
+            </div>
+            <div class="login_sc">
+                <div class="login_sc_0">
+                    <h3>비밀번호 재설정</h3>
+                </div>
+                <div class="login_sc_1">
+                    <input type="password" class="input_text_type_2 input_id gray_black_line pw1" name="password" placeholder="새 비밀번호를 입력해주세요" maxlength="10">
+                    <div class="input_pw_icon">
+                        <button>
+                            <i class="icon_noeyes noeyes1"></i>
+                        </button>
+                    </div>
+                    <div class="input_cancel_icon2 cancel_bt_div">
+                        <button class="cancel_bt cc_bt1 close">
+                            <i class="text_cancel_icon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="input_alert2 alert3 close">
+                    <p>
+                        <i class="icon_alert2"></i>
+                        8-20자 이내 영문/숫자/특수문자 조합하여 입력해 주세요.
+                    </p>
+                </div>
+                <div class="login_sc_1 mg_top_10">
+                    <input type="password" class="input_text_type_2 input_pw gray_black_line pw2" name="password " placeholder="새 비밀번호를 재입력해주세요." maxlength="10">
+                    <div class="input_pw_icon">
+                        <button>
+                            <i class="icon_noeyes noeyes2"></i>
+                        </button>
+                    </div>
+                    <div class="input_cancel_icon2 cancel_bt_div">
+                        <button class="cancel_bt cc_bt2 close">
+                            <i class="text_cancel_icon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="input_alert alert2 close">
+                    <p>
+                        <i class="icon_alert"></i>
+                        입력하신 비밀번호가 일치하지 않습니다
+                    </p>
+                </div>
+                <div class="input_alert2 alert4 close">
+                    <p>
+                        <i class="icon_alert2"></i>
+                        입력하신 비밀번호가 일치합니다.
+                    </p>
+                </div>
+                <div class="login_sc_2 mg_top_75">
+                    <button class="bt_type_10 login_bt gray_purple_bg2">저장</button>
+                </div>
+                <div class="login_sc_3">
+                    <div class="login_sc_3_right">
+                        <a href="#">
+                            <span>아이디 찾기 →</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

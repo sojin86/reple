@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>커뮤니티 목록</title>
+        <link rel="stylesheet" href="../css/reset.css" />
+        <link rel="stylesheet" href="../css/web_style.css" />
+        <link rel="stylesheet" href="../css/mobile_style.css" />
+        <script src="../js/jquery-3.6.0.js"></script>
+        <script src="../js/common.js"></script>
+    </head>
+    <script>
+        $(document).ready(function () {
+            // 등록 버튼 클릭시 modal_1_open (modal_signup)
+            var CT_opBT = $('.content_type_1-1_sc_two1 > .bt_type_4');
+            CT_opBT.click(function () {
+                $('.modal_signup').removeClass('close');
+                $('.modal_signup').addClass('open');
+                $('body').css('overflow-y', 'hidden');
+            });
+            // modal_1 (modal_signup) x버튼 클릭시 없어짐
+            var MD1_cancel_bt = $('.modal_signup_cancel_bt');
+            MD1_cancel_bt.click(function () {
+                $('.modal_signup').removeClass('open');
+                $('.modal_signup').addClass('close');
+                $('body').css('overflow-y', 'scroll');
+            });
+            // modal_1 등록버튼 클릭시 없어짐 (modal_signup)
+            var MD1_saveBT = $('.modal_1_ft_div > .bt_type_8');
+            MD1_saveBT.click(function () {
+                $('.modal_signup').removeClass('open');
+                $('.modal_signup').addClass('close');
+                $('body').css('overflow-y', 'scroll');
+            });
+            // 박스 색 폰트 변경
+            var MD1_save_bt = $('.modal_1_ft_div > .bt_type_7');
+            MD1_save_bt.click(function () {
+                var MD1_lb = $('.modal_1_sc_two_1 > .selected_1');
+                var MD1_span = $('.selected_1 > .select1');
+                var MD1_ip = $('.modal_1_sc_two_2 > .input_text_type_1');
+                var MD1_text = $('.modal_1_sc_two_3 > .text_type_2');
+                // 임시저장 버튼 색변경
+                MD1_save_bt.removeClass('bt_type_7');
+                MD1_save_bt.addClass('bt_type_6');
+                // 카테고리 선 변경
+                MD1_lb.removeClass('gray_black_line');
+                MD1_lb.addClass('white_line2');
+                // lable 폰트 색 변경
+                MD1_span.removeClass('gray_color');
+                MD1_span.addClass('white_color');
+                // input 텍스트 바 색 번경
+                MD1_ip.removeClass('gray_black_line2');
+                MD1_ip.addClass('white_line');
+                // input placeholder 색변경
+                MD1_ip.addClass('white_ph');
+                // textarea 색 변경
+                MD1_text.removeClass('gray_black_line2');
+                MD1_text.addClass('white_line');
+                // textarea placeholder 색변경
+                MD1_text.addClass('white_ph');
+            });
+            // 조회수순 추천순 최신순
+            var BT5 = $('.bt_type_5');
+            BT5.click(function () {
+                var BT5this = $(this);
+                BT5.siblings('.bt_type_5').removeClass('gray_white_color');
+                BT5this.addClass('gray_white_color');
+            });
+            // select_box_1
+            $(document).on('click', '.select1', function () {
+                var boxObj1 = $(this).parent().siblings('.options_1').children('ul');
+                boxObj1.show();
+                $(this).addClass('open');
+                $(this).removeClass('gray_black_line');
+                $(this).addClass('white_line2');
+            });
+            $('body').click(function (e) {
+                if ($('.select1').hasClass('open')) {
+                    $('.select1_ul').hide();
+                    $('.select1').removeClass('open');
+                }
+            });
+            $('.options_1 > ul > li > button').click(function () {
+                var changeText = $(this).html();
+                var Selected_1 = $(this).closest('.options_1').siblings('.selected_1');
+                var checkText = $(this).closest('.options_1').siblings('.selected_1').children('.select1');
+
+                Selected_1.find('.select1').html(changeText);
+                checkText.css('color', '#f6f6f6');
+                $(this).closest('ul').hide();
+            });
+            $('.select1_ul li').click(function () {
+                $('.selected_1 > .select1').addClass('white_line2');
+            });
+            // input text box안에 글자 들어오면 흰색 border 주기
+            var modal_ip_box = $('.modal_1_sc_two_2 > .input_text_type_1');
+            modal_ip_box.keydown(function () {
+                var md_ip_this = $(this);
+
+                if (md_ip_this.val() == '') {
+                    md_ip_this.removeClass('white_line');
+                    md_ip_this.addClass('gray_black_line');
+                } else {
+                    md_ip_this.removeClass('gray_black_line');
+                    md_ip_this.addClass('white_line');
+                }
+            });
+            // textarea 안에 글자 들어오면 흰색 border 주기
+            var modal_ta_box = $('.modal_1_sc_two_3 > .text_type_2');
+            modal_ta_box.keydown(function () {
+                var md_ta_this = $(this);
+
+                if (md_ta_this.val() == '') {
+                    md_ta_this.removeClass('white_line');
+                    md_ta_this.addClass('gray_black_line2');
+                } else {
+                    md_ta_this.removeClass('gray_black_line2');
+                    md_ta_this.addClass('white_line');
+                }
+            });
+            // 모달1 제목 텍스트 입력하면 x 버튼 나옴
+            var modal_IP = $('.modal_1_sc_two_2 > .input_text_type_1');
+            modal_IP.keydown(function () {
+                var md_ip_this = $(this);
+
+                if (md_ip_this.val() == '') {
+                    $('.modal_1_text_icon').removeClass('open');
+                    $('.modal_1_text_icon').addClass('close');
+                } else {
+                    $('.modal_1_text_icon').removeClass('close');
+                    $('.modal_1_text_icon').addClass('open');
+                }
+            });
+            // 모달1 x 버튼 클릭하면 해당 내용 사라짐
+            $('.modal_1_text_icon').click(function () {
+                $('.input_text_type_1').val('');
+                $('.modal_1_text_icon').addClass('close');
+                $('.input_text_type_1').removeClass('white_line');
+                $('.input_text_type_1').addClass('gray_black_line');
+            });
+        });
+    </script>
+    <body>
+        <div class="wrap main_pg">
+            <header>
+                <div class="hd_wrap">
+                    <div class="hd_logo_div">
+                        <img src="../img/hd_logo.png" class="hd_logo" />
+                        <span class="hd_logo_font">커뮤니티</span>
+                        <i class="hd_logo_icon"></i>
+                    </div>
+                    <div class="hd_right_div">
+                        <div class="hd_search_div">
+                            <i class="icon_search"></i>
+                            <input type="search" class="search_bar_type_1" placeholder="검색어를 입력하세요" />
+                        </div>
+                        <div class="hd_login_div">
+                            <a href="../html/mypage_001.html" class="bt_type_3">
+                                <i class="icon_user"></i>
+                            </a>
+                            <button class="bt_type_3">
+                                <i class="icon_bell"></i>
+                                <i class="white_circle_icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="m_hd">
+                <div class="m_hd_title">
+                    <h3>커뮤니티</h3>
+                </div>
+                <div class="m_hd_bt">
+                    <button>
+                        <i class="icon_search_m"></i>
+                    </button>
+                    <button class="m_icon_bell">
+                        <i class="icon_bell"></i>
+                        <i class="purple_circle_icon"></i>
+                    </button>
+                </div>
+            </div>
+            <nav>
+                <ul class="gray_purple_bg mg_bt_20">
+                    <li class="">
+                        <a href="../html/main_001.html">
+                            <span>전체</span>
+                            <i class="nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="../html/main_002.html">
+                            <span>자유토론</span>
+                            <i class="nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span>스니커즈</span>
+                            <i class="white_circle_icon nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span>착샷</span>
+                            <i class="white_circle_icon nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span>이벤트</span>
+                            <i class="nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span>응모인증</span>
+                            <i class="nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span>주간리플</span>
+                            <i class="white_circle_icon nav_circle_icon"></i>
+                            <i class="arrow_right"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="nav_footer">
+                    <div class="footer_content_wrap black_gray_bg">
+                        <h5>㈜케이티알파 ㅣ 대표이사 정기호</h5>
+                        <p>서울시 동작구 보라매로5길 23 삼성보라매옴니타워 (07071</p>
+                        <span>
+                            - 사업자등록번호: 211-81-79649 <br />
+                            - 통신판매업: 2019-서울동작-0381 <br />
+                            - 고객정보보호 책임자: 정훈 <br />
+                            - 고객센터: help.reple@kt.com
+                        </span>
+                        <br />
+                        <span>Copyright ⓒ KTalpha Co. Ltd All right reserved</span>
+                    </div>
+                </div>
+            </nav>
+            <section>
+                <div class="fixed_icon_div">
+                    <button>
+                        <i class="plus_icon"></i>
+                        <span>새글 업데이트</span>
+                    </button>
+                </div>
+                <div class="content_type_1 black_gray_bg">
+                    <div class="content_type_1_hd">
+                        <div class="content_type_1_hd_left">
+                            <h3>자유토론</h3>
+                            <p>
+                                자유토론 게시판 설명글 입니다. 자유토론 게시판 설명글 입니다. 자유토론 게시판 설명글
+                                입니다.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="content_type_1-1_sc">
+                        <div class="content_type_1-1_sc_one">
+                            <div class="content_type_1-1_sc_one1">
+                                <span>공지</span>
+                                <a href="../html/board_003.html">
+                                    자유토론 공지사항 입니다. 클릭하면 화면 이동합니다.
+                                </a>
+                            </div>
+                            <div class="content_type_1-1_sc_one2">
+                                <a href="../html/board_002.html">
+                                    <span>전체보기</span>
+                                    <i class="arrow_right_gray"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="m_content_type_1-1 close">
+                            <a href="../html/board_003.html">
+                                <span> 자유톡 공지사항 입니다. 클릭하면 화면 이동합니다. </span>
+                                <div class="content_type_1-1_sc_one2">
+                                    <span>전체보기</span>
+                                    <i class="arrow_right_gray"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="content_type_1-1_sc_two">
+                            <div class="content_type_1-1_sc_two1">
+                                <textarea
+                                    class="text_type_1 black_gray_bg"
+                                    placeholder="지금 리플에서 하고 싶은 말을 작성해주세요."
+                                ></textarea>
+                                <button class="bt_type_4">등록</button>
+                            </div>
+                            <div class="content_type_1-1_sc_two2">
+                                <div class="content_type_1-1_sc_two2-1">
+                                    <button class="bt_type_5">조회수순</button>
+                                    <span class="line_gray">|</span>
+                                    <button class="bt_type_5">추천순</button>
+                                    <span class="line_gray">|</span>
+                                    <button class="bt_type_5 gray_white_color">최신순</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content_type_2 gray_purple_bg mg_top_10">
+                    <div class="content_type_2_hd">
+                        <div class="content_type_2_hd_left">
+                            <i class="user_icon1"></i>
+                        </div>
+                        <div class="content_type_2_hd_right">
+                            <p>JORDAN</p>
+                            <span>1시간 전</span>
+                        </div>
+                    </div>
+                    <div class="content_type_2_sc">
+                        <a href="#">
+                            <div class="content_type_2_sc_left">
+                                <div class="content_type_2_sc_one">
+                                    <span>자유토론</span>
+                                    <p>이거 실착상태 어때?</p>
+                                </div>
+                                <div class="content_type_2_sc_two">
+                                    <p>
+                                        신발 하나 새로샀는데, 내발에 좀 안맞나?<br />
+                                        안이뻐보이네 ㅋㅋ …어떤지 한번 봐주라. 텍스트 몇줄까지 노출?
+                                    </p>
+                                </div>
+                                <div class="content_type_2_sc_three">
+                                    <i class="eye_icon"></i>
+                                    <span>23</span>
+                                    <i class="heart_icon"></i>
+                                    <span>15</span>
+                                    <i class="talk_icon"></i>
+                                    <span>23</span>
+                                </div>
+                            </div>
+                            <div class="content_type_2_sc_right">
+                                <i class="picture_1"></i>
+                            </div>
+                            <div class="m_content_type_img close">
+                                <div class="m_content_type_img_item wd100">
+                                    <img class="m_img_01" src="../img/m_img_01.png" />
+                                </div>
+                            </div>
+                            <div class="content_type_2_sc_three close">
+                                <i class="eye_icon"></i>
+                                <span>23</span>
+                                <i class="heart_icon"></i>
+                                <span>15</span>
+                                <i class="talk_icon"></i>
+                                <span>23</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="content_type_2 gray_purple_bg mg_top_10">
+                    <div class="content_type_2_hd">
+                        <div class="content_type_2_hd_left">
+                            <i class="user_icon2"></i>
+                        </div>
+                        <div class="content_type_2_hd_right">
+                            <p>JORDAN</p>
+                            <span>1시간 전</span>
+                        </div>
+                    </div>
+                    <div class="content_type_2_sc">
+                        <a href="#">
+                            <div class="content_type_2_sc_left">
+                                <div class="content_type_2_sc_one">
+                                    <span>스니커즈</span>
+                                    <p>우리 커플 신발 구매주기인데 어때여?</p>
+                                </div>
+                                <div class="content_type_2_sc_two">
+                                    <p>
+                                        한 달에 두 개씩 커플 신발을 구매하는데 비용이 많이 들어 고민이야 거의 50만원이
+                                        들어가는데 한 달에 두 개씩 커플 신발을 구매하는데 비용이 많이 들어 고민이야 거의
+                                        50만원이 들어가는데 한 달에 두 개씩 커플 신발을 구매하는데 비용이....
+                                    </p>
+                                </div>
+                                <div class="content_type_2_sc_three">
+                                    <i class="eye_icon"></i>
+                                    <span>23</span>
+                                    <i class="heart_icon"></i>
+                                    <span>15</span>
+                                    <i class="talk_icon"></i>
+                                    <span>23</span>
+                                </div>
+                            </div>
+                            <div class="content_type_2_sc_right">
+                                <i class="picture_2"></i>
+                            </div>
+                            <div class="m_content_type_img close">
+                                <div class="m_content_type_img_item">
+                                    <img class="m_img_01" src="../img/m_img_01.png" />
+                                </div>
+                                <div class="m_content_type_img_item">
+                                    <img class="m_img_02" src="../img/m_img_02.png" />
+                                </div>
+                                <div class="m_content_type_img_item">
+                                    <img class="m_img_03" src="../img/m_img_03.png" />
+                                    <div class="m_content_number_div">
+                                        <div></div>
+                                        <span>+ 3</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content_type_2_sc_three close">
+                                <i class="eye_icon"></i>
+                                <span>23</span>
+                                <i class="heart_icon"></i>
+                                <span>15</span>
+                                <i class="talk_icon"></i>
+                                <span>23</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="content_type_2 gray_purple_bg mg_top_10">
+                    <div class="content_type_2_hd">
+                        <div class="content_type_2_hd_left">
+                            <i class="user_icon1"></i>
+                        </div>
+                        <div class="content_type_2_hd_right">
+                            <p>JORDAN</p>
+                            <span>1시간 전</span>
+                        </div>
+                    </div>
+                    <div class="content_type_2_sc">
+                        <a href="../html/board_004.html">
+                            <div class="content_type_2_sc_left">
+                                <div class="content_type_2_sc_one">
+                                    <span>자유토론</span>
+                                    <p>이거 실착상태 어때?</p>
+                                </div>
+                                <div class="content_type_2_sc_two">
+                                    <p>
+                                        신발 하나 새로샀는데, 내발에 좀 안맞나? 안이뻐보이네 ㅋㅋ 어떤지 한번 봐주라
+                                        몇줄까지 노출되는 건가요
+                                    </p>
+                                </div>
+                                <div class="content_type_2_sc_three">
+                                    <i class="eye_icon"></i>
+                                    <span>23</span>
+                                    <i class="heart_icon"></i>
+                                    <span>15</span>
+                                    <i class="talk_icon"></i>
+                                    <span>23</span>
+                                </div>
+                            </div>
+                            <div class="m_content_type_img close">
+                                <div class="m_content_type_img_item wd100">
+                                    <img class="m_img_01" src="../img/m_img_01.png" />
+                                </div>
+                            </div>
+                            <div class="content_type_2_sc_three close">
+                                <i class="eye_icon"></i>
+                                <span>23</span>
+                                <i class="heart_icon"></i>
+                                <span>15</span>
+                                <i class="talk_icon"></i>
+                                <span>23</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="picture_ad_div mg_top_10">
+                    <img src="../img/picture_ad2.png" alt="" />
+                </div>
+
+                <div class="content_type_2 gray_purple_bg mg_top_10">
+                    <div class="content_type_2_hd">
+                        <div class="content_type_2_hd_left">
+                            <i class="user_icon1"></i>
+                        </div>
+                        <div class="content_type_2_hd_right">
+                            <p>JORDAN</p>
+                            <span>1시간 전</span>
+                        </div>
+                    </div>
+                    <div class="content_type_2_sc">
+                        <a href="../html/board_004.html">
+                            <div class="content_type_2_sc_left">
+                                <div class="content_type_2_sc_one">
+                                    <span>자유토론</span>
+                                    <p>이거 실착상태 어때?</p>
+                                </div>
+                                <div class="content_type_2_sc_two">
+                                    <p>
+                                        신발 하나 새로샀는데, 내발에 좀 안맞나?<br />
+                                        안이뻐보이네 ㅋㅋ …어떤지 한번 봐주라. 텍스트 몇줄까지 노출?
+                                    </p>
+                                </div>
+                                <div class="content_type_2_sc_three">
+                                    <i class="eye_icon"></i>
+                                    <span>23</span>
+                                    <i class="heart_icon"></i>
+                                    <span>15</span>
+                                    <i class="talk_icon"></i>
+                                    <span>23</span>
+                                </div>
+                            </div>
+                            <div class="content_type_2_sc_right">
+                                <i class="picture_1"></i>
+                            </div>
+                            <div class="m_content_type_img close">
+                                <div class="m_content_type_img_item">
+                                    <img class="m_img_01" src="../img/m_img_01.png" />
+                                </div>
+                                <div class="m_content_type_img_item">
+                                    <img class="m_img_02" src="../img/m_img_02.png" />
+                                </div>
+                            </div>
+                            <div class="content_type_2_sc_three close">
+                                <i class="eye_icon"></i>
+                                <span>23</span>
+                                <i class="heart_icon"></i>
+                                <span>15</span>
+                                <i class="talk_icon"></i>
+                                <span>23</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="content_type_2 gray_purple_bg mg_top_10">
+                    <div class="content_type_2_hd">
+                        <div class="content_type_2_hd_left">
+                            <i class="user_icon2"></i>
+                        </div>
+                        <div class="content_type_2_hd_right">
+                            <p>JORDAN</p>
+                            <span>1시간 전</span>
+                        </div>
+                    </div>
+                    <div class="content_type_2_sc">
+                        <a href="../html/board_004.html">
+                            <div class="content_type_2_sc_left">
+                                <div class="content_type_2_sc_one">
+                                    <span>스니커즈</span>
+                                    <p>우리 커플 신발 구매주기인데 어때여?</p>
+                                </div>
+                                <div class="content_type_2_sc_two">
+                                    <p>
+                                        한 달에 두 개씩 커플 신발을 구매하는데 비용이 많이 들어 고민이야 거의 50만원이
+                                        들어가는데 한 달에 두 개씩 커플 신발을 구매하는데 비용이 많이 들어 고민이야 거의
+                                        50만원이 들어가는데 한 달에 두 개씩 커플 신발을 구매하는데 비용이....
+                                    </p>
+                                </div>
+                                <div class="content_type_2_sc_three">
+                                    <i class="eye_icon"></i>
+                                    <span>23</span>
+                                    <i class="heart_icon"></i>
+                                    <span>15</span>
+                                    <i class="talk_icon"></i>
+                                    <span>23</span>
+                                </div>
+                            </div>
+                            <div class="content_type_2_sc_right">
+                                <i class="picture_2"></i>
+                            </div>
+                            <div class="m_content_type_img close">
+                                <div class="m_content_type_img_item">
+                                    <img class="m_img_01" src="../img/m_img_01.png" />
+                                </div>
+                                <div class="m_content_type_img_item">
+                                    <img class="m_img_02" src="../img/m_img_02.png" />
+                                </div>
+                                <div class="m_content_type_img_item">
+                                    <img class="m_img_03" src="../img/m_img_03.png" />
+                                    <div class="m_content_number_div">
+                                        <div></div>
+                                        <span>+ 3</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content_type_2_sc_three close">
+                                <i class="eye_icon"></i>
+                                <span>23</span>
+                                <i class="heart_icon"></i>
+                                <span>15</span>
+                                <i class="talk_icon"></i>
+                                <span>23</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="content_type_2 gray_purple_bg mg_top_10">
+                    <div class="content_type_2_hd">
+                        <div class="content_type_2_hd_left">
+                            <i class="user_icon1"></i>
+                        </div>
+                        <div class="content_type_2_hd_right">
+                            <p>JORDAN</p>
+                            <span>1시간 전</span>
+                        </div>
+                    </div>
+                    <div class="content_type_2_sc">
+                        <a href="../html/board_004.html">
+                            <div class="content_type_2_sc_left">
+                                <div class="content_type_2_sc_one">
+                                    <span>자유토론</span>
+                                    <p>이거 실착상태 어때?</p>
+                                </div>
+                                <div class="content_type_2_sc_two">
+                                    <p>
+                                        신발 하나 새로샀는데, 내발에 좀 안맞나?<br />
+                                        안이뻐보이네 ㅋㅋ …어떤지 한번 봐주라. 텍스트 몇줄까지 노출?
+                                    </p>
+                                </div>
+                                <div class="content_type_2_sc_three">
+                                    <i class="eye_icon"></i>
+                                    <span>23</span>
+                                    <i class="heart_icon"></i>
+                                    <span>15</span>
+                                    <i class="talk_icon"></i>
+                                    <span>23</span>
+                                </div>
+                            </div>
+                            <div class="m_content_type_img close">
+                                <div class="m_content_type_img_item wd100">
+                                    <img class="m_img_01" src="../img/m_img_01.png" />
+                                </div>
+                            </div>
+                            <div class="content_type_2_sc_three close">
+                                <i class="eye_icon"></i>
+                                <span>23</span>
+                                <i class="heart_icon"></i>
+                                <span>15</span>
+                                <i class="talk_icon"></i>
+                                <span>23</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            <aside>
+                <div class="right_ad_div">
+                    <img src="../img/Artboard_1.png" alt="" />
+                    <img src="../img/Artboard_2.png" alt="" />
+                </div>
+            </aside>
+            <div class="footer_icon close">
+                <button>
+                    <i class="ft_plus_icon"></i>
+                </button>
+            </div>
+            <footer class="footer close">
+                <button class="ft_bt_01">
+                    <i class="ft_icon_01"></i>
+                </button>
+                <button class="ft_bt_02 active">
+                    <i class="ft_icon_02"></i>
+                </button>
+                <button class="ft_bt_03">
+                    <i class="ft_icon_03"></i>
+                </button>
+                <button class="ft_bt_04">
+                    <i class="ft_icon_04"></i>
+                </button>
+            </footer>
+        </div>
+
+        <!-- 팝업창 1 -->
+        <div class="modal_1 modal_signup close">
+            <div class="modal_content_1 modal_background_1_color">
+                <div class="modal_1_header modal_background_1_color">
+                    <div class="modal_1_header_left">
+                        <h2>게시물 쓰기</h2>
+                    </div>
+                    <div class="modal_1_header_right">
+                        <button class="modal_1_cancel_bt">
+                            <i class="modal_cancel_1_icon modal_signup_cancel_bt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal_1_section">
+                    <div class="modal_1_sc_one">
+                        <div class="modal_1_sc_one_1">
+                            <button>
+                                <i class="camera_icon"></i>
+                                <p>0/10</p>
+                            </button>
+                        </div>
+                        <!-- <div class="modal_1_sc_one_2">
+                        <img src="../img/add_picture1.png" class="add_picture_1">
+                        <div class="modal_sc_one_2_bottom">
+                            <span>MAIN</span>
+                        </div>
+                        <div class="modal_sc_one_2_right">
+                            <button>
+                                <i class="cancel_icon_1"></i>
+                            </button>
+                        </div>
+                    </div> -->
+                        <!-- <div class="modal_1_sc_one_2">
+                        <img src="../img/add_picture2.png" class="add_picture_1">
+                        <div class="modal_sc_one_2_right">
+                            <button>
+                                <i class="cancel_icon_1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc_one_2">
+                        <img src="../img/add_picture3.png" class="add_picture_1">
+                        <div class="modal_sc_one_2_right">
+                            <button>
+                                <i class="cancel_icon_1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc_one_2">
+                        <img src="../img/add_picture4.png" class="add_picture_1">
+                        <div class="modal_sc_one_2_right">
+                            <button>
+                                <i class="cancel_icon_1"></i>
+                            </button>
+                        </div>
+                    </div> -->
+                    </div>
+                    <div class="modal_1_sc_two">
+                        <div class="modal_1_sc_two_1">
+                            <div class="selected_1 gray_black_line">
+                                <span class="select1 gray_color"> 카테고리 선택 </span>
+                                <i class="arrow_lable_icon"></i>
+                            </div>
+                            <div class="options_1">
+                                <ul class="select1_ul">
+                                    <li>
+                                        <button>스니커즈</button>
+                                    </li>
+                                    <li>
+                                        <button>착샷</button>
+                                    </li>
+                                    <li>
+                                        <button>이벤트</button>
+                                    </li>
+                                    <li>
+                                        <button>응모인증</button>
+                                    </li>
+                                    <li>
+                                        <button>주간리플</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="modal_1_sc_two_2">
+                            <input
+                                type="text"
+                                class="input_text_type_1 gray_black_line"
+                                placeholder="제목을 입력하세요"
+                            />
+                            <div class="modal_1_text_icon close">
+                                <button>
+                                    <i class="text_cancel_icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal_1_sc_two_3">
+                            <textarea class="text_type_2 gray_black_line2" placeholder="내용을 입력하세요."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal_1_footer modal_background_1_color">
+                    <div class="modal_1_ft_div">
+                        <button class="bt_type_7">임시저장</button>
+                        <button class="bt_type_8">등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 팝업창 2 -->
+        <div class="modal_1 modal_notice close">
+            <div class="modal_content_1 gray_purple_bg">
+                <div class="modal_1_header gray_purple_bg">
+                    <div class="modal_1_header_left">
+                        <h2>앱 알림</h2>
+                    </div>
+                    <div class="modal_1_header_right">
+                        <button class="modal_1_cancel_bt">
+                            <i class="modal_cancel_1_icon modal_notice_cancel_bt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal_1_section2">
+                    <div class="modal_1_sc2_one">
+                        <p>앱 알림은 1개월간 보관 후 자동 삭제됩니다.</p>
+                    </div>
+                    <div class="modal_1_sc2_two">
+                        <div class="content_type_3 gray_purple_bg2">
+                            <a href="#">
+                                <p>
+                                    <span>JORDAN</span>
+                                    님이 작성한 게시물에 새 댓글이 올라왔습니다.
+                                </p>
+                                <h5>재미없는 하루!</h5>
+                                <span>2022-02-15</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc2_two">
+                        <div class="content_type_3 gray_purple_bg2">
+                            <a href="#">
+                                <p>
+                                    <span>JORDAN</span>
+                                    님이 작성한 게시물을 14명이 좋아합니다.
+                                </p>
+                                <h5>왜 재미가 없을까요? 재미있는 하루가 되셨으면 해요. 재미있는 하루 되시길!!</h5>
+                                <span>2022-02-15</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc2_two">
+                        <div class="content_type_3 gray_purple_bg2">
+                            <a href="#">
+                                <h5>지금 리플 운영자가 정성스럽게 작성한 정품 스니커즈에 대해서 알아봐요!</h5>
+                                <span>2022-02-15</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc2_two">
+                        <div class="content_type_3 gray_purple_bg2">
+                            <a href="#">
+                                <p>
+                                    <span>JORDAN</span>
+                                    님이 작성한 게시물에 새 댓글이 올라왔습니다.
+                                </p>
+                                <h5>재미없는 하루!</h5>
+                                <span>2022-02-15</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal_1_sc2_two">
+                        <div class="content_type_3 gray_purple_bg2">
+                            <a href="#">
+                                <p>
+                                    <span>JORDAN</span>
+                                    님이 작성한 게시물을 14명이 좋아합니다.
+                                </p>
+                                <h5>왜 재미가 없을까요? 재미있는 하루가 되셨으면 해요. 재미있는 하루 되시길!!</h5>
+                                <span>2022-02-15</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
