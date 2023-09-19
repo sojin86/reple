@@ -1700,12 +1700,15 @@ section > .mp05 > .content_type_10 > a > .content_type_10_three > span {
 
 /* button type */
 .bt_type_1 {
+    display: inline-block;
     width: 75px;
     height: 36px;
     background-color: #fff;
     border-radius: 6px;
     font-size: 14px;
     color: #0f0f14;
+    padding: 8px 0;
+    text-align: center;
 }
 
 .bt_type_2 {
